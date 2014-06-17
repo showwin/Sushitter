@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Owner:</strong>
+  <%= @dictionary.owner %>
+</p>
+
+<p>
+  <strong>Word:</strong>
+  <%= @dictionary.word %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @dictionary.value %>
+</p>
+
+<%= link_to 'Edit', edit_dictionary_path(@dictionary) %> |
+<%= link_to 'Back', dictionaries_path %>

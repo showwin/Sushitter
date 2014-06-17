@@ -1,0 +1,51 @@
+<div id="wrapper">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<h1>Sushitter</h1>
+			<div class="panel-heading">
+				<%= form_for @tweet, remote: true do |f| %>
+					<div class="row">
+						<div class="col-md-4">
+							<%= f.text_field :name, :class => "form-control input-sm", :placeholder => "Type your name" %>
+						</div>
+						<div class="col-md-4">
+							<%= f.select(:emotion, [["自動", "auto"], ["良い", "1"], ["悪い", "-1"]], {}, {:class => "form-control input-sm"}) %>
+						</div>
+						<div class="col-md-2">
+							<%= link_to "Set Init", set_init_path, method: :post, :class => "btn btn-info btn-sm", remote: true %>
+						</div>
+						<div class="col-md-2">
+							<%= link_to "Test", test_tweet_path, method: :post, :class => "btn btn-info btn-sm", remote: true %>
+						</div>
+					</div><p></p>
+					<div class="input-group">
+						<%= f.text_field :content, :class => "form-control input-sm", :placeholder => "Type your message here..." %>
+						<span class="input-group-btn">
+							<%= f.submit "Tweet", :class => "btn btn-info btn-sm"%>
+						</span>
+					</div>
+				<% end %>
+			</div>
+			<div class="chat-panel panel panel-default">
+				<div class="panel-heading">
+					<i class="fa fa-comments fa-fw"></i>Timeline
+					<div class="btn-group pull-right">
+						<%= form_tag get_tweets_path, remote: true do %>
+							<%= text_field_tag :from, params[:from] ,:size => 1 %>件目から
+							<%= text_field_tag :to, params[:to] ,:size => 1 %>件を
+							<span class="getTweets">
+								<%= submit_tag "取得", :class => "btn btn-info btn-sm", :id => "getTweets" %>
+							</span>
+						<% end %>
+					</div>
+				</div>
+				<div class="panel-body">
+					<ul class="chat" id="chat">
+					</ul>
+				</div>
+				<!-- /.panel-body -->
+			</div>
+			<!-- /.panel .chat-panel -->
+		</div>
+	</div>
+</div>

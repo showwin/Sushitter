@@ -1,0 +1,6 @@
+<% while @node %>
+  <%= @node.surface + @node.feature %>::::<br>
+	<% elem = @node.feature.split(",") %>
+	<%= elem[0]+elem[6] %>
+  <% @node = @node.next %><br><br>
+<% end %>
