@@ -2,6 +2,7 @@ var tweet = <%= raw @tweet.to_json %>;
 var name = tweet.name;
 var emotion = tweet.emotion;
 var content = tweet.content;
+var score = tweet.score;
 var date = tweet.created_at.substr(0, 19).replace("T", " ");
 var count = tweet.id;
 var sushi_num;
@@ -19,5 +20,6 @@ var span = '<span class="chat-img pull-left">'+img+'</span>';
 var div_header = '<div class="header"><p id="tl_name"><b>'+name+'</b></p>'+
 	'<small class="pull-right text-muted"><p id="tl_time">'+count+'<br>'+date+'</p></small><div>';
 var strong = '<strong class="primary-font" id="tl_content_jp">'+content+'</strong>';
-var div_body = '<div class="chat-body clearfix">'+div_header+strong+'</div>';
+var p = '<p id="tl_content_en">'+score+'</p>';
+var div_body = '<div class="chat-body clearfix">'+div_header+strong+p+'</div>';
 $("#chat").prepend($('<li class="left clearfix">').append(span).append(div_body));

@@ -7,13 +7,13 @@ class HomeController < ApplicationController
   end
   
   def test
-    node = MeCab::Tagger.new.parseToNode("今日はかなり疲れた。明日は何しようかな")
-    while node
-      elem = node.feature.split(",")
-      parts = elem[0]
-      origin = elem[6]
-      node = node.next
-    end
+    @node = MeCab::Tagger.new.parseToNode("今日はかなり疲れた。明日は何しようかな")
+    #while node
+    #  elem = node.feature.split(",")
+    #  parts = elem[0]
+    #  origin = elem[6]
+    #  node = node.next
+    #end
   end
   
   def test_tweet

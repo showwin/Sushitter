@@ -11,14 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140617114737) do
+ActiveRecord::Schema.define(version: 20140617145038) do
 
   create_table "dictionaries", force: true do |t|
     t.string   "owner"
     t.string   "word"
-    t.integer  "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "value"
+    t.string   "kana"
   end
 
   create_table "tweets", force: true do |t|
@@ -27,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140617114737) do
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "score"
   end
 
 end

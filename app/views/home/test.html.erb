@@ -1,6 +1,8 @@
-<% while @node %>
+<% @node=@node.next %>
+<% while @node.next %>
   <%= @node.surface + @node.feature %>::::<br>
 	<% elem = @node.feature.split(",") %>
-	<%= elem[0]+elem[6] %>
+	<%= @node.feature %>
+	<%= elem[0]+elem[6]+elem[7].tr("ァ-ン", "ぁ-ん") %>
   <% @node = @node.next %><br><br>
 <% end %>

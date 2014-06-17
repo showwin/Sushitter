@@ -5,6 +5,7 @@ for(var i=0; i<len; i++){
 	var name = tweets[i].name;
 	var emotion = tweets[i].emotion;
 	var content = tweets[i].content;
+	var score = tweets[i].score;
 	var date = tweets[i].created_at.substr(0, 19).replace("T", " ");
 	var count = tweets[i].id;
 	var sushi_num;
@@ -22,6 +23,7 @@ for(var i=0; i<len; i++){
 	var div_header = '<div class="header"><p id="tl_name"><b>'+name+'</b></p>'+
 		'<small class="pull-right text-muted"><p id="tl_time">'+count+'<br>'+date+'</p></small><div>';
 	var strong = '<strong class="primary-font" id="tl_content_jp">'+content+'</strong>';
-	var div_body = '<div class="chat-body clearfix">'+div_header+strong+'</div>';
+	var p = '<p id="tl_content_en">'+score+'</p>';
+	var div_body = '<div class="chat-body clearfix">'+div_header+strong+p+'</div>';
 	$("#chat").prepend($('<li class="left clearfix">').append(span).append(div_body));
 }

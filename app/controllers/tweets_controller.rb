@@ -13,6 +13,28 @@ class TweetsController < ApplicationController
   
   def create
     @tweet = Tweet.new(tweet_params)
+    if tweet_params[:emotion] == "auto"
+      node = MeCab::Tagger.new.parseToNode(@tweet.content)
+      score = 0
+      node = node.next
+      while node.next
+        elem = (node.feature).split(",")
+        parts = elem[0]
+        if parts == "名詞" || parts == "動詞" || parts == "形容詞" || parts == "副詞" || parts == "助動詞"
+          word = elem[6]
+          kana = elem[7].tr("ァ-ン", "ぁ-ん") if elem[7]
+          result = Dictionary.where(word: word, kana: kana).first
+          if result
+            score += result[:value].to_f
+          end
+        end
+        node = node.next
+      end
+      score>=0 ? @tweet.emotion = 1 : @tweet.emotion = -1
+      @tweet.score = score
+    else
+      @tweet.score = @tweet.emotion.to_i
+    end
 
     respond_to do |format|
       format.js if @tweet.save
