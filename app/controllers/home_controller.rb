@@ -8,7 +8,7 @@ class HomeController < ApplicationController
   end
   
   def test
-    @node = MeCab::Tagger.new.parseToNode("今日は暇だしとなりのトトロでも見ようか。ついでにApple Storeにも行く")
+    @node = MeCab::Tagger.new.parseToNode("3月の給料もらったけど、時給117円から166円に上ってた。うれしーわー！！！！！！！！！！")
   end
 
   def set_init
