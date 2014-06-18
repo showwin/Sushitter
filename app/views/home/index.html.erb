@@ -6,16 +6,13 @@
 				<%= form_for @tweet, remote: true do |f| %>
 					<div class="row">
 						<div class="col-md-4">
-							<%= f.text_field :name, :class => "form-control input-sm", :placeholder => "Type your name" %>
+							<%= f.select(:name, @dic_owners.map{|d| [d.owner, d.owner]}, {}, {:class => "form-control input-sm"}) %>
 						</div>
 						<div class="col-md-4">
 							<%= f.select(:emotion, [["自動", "auto"], ["良い", "1"], ["悪い", "-1"]], {}, {:class => "form-control input-sm"}) %>
 						</div>
 						<div class="col-md-2">
-							<%= link_to "Set Init", set_init_path, method: :post, :class => "btn btn-info btn-sm", remote: true %>
-						</div>
-						<div class="col-md-2">
-							<%= link_to "Test", test_tweet_path, method: :post, :class => "btn btn-info btn-sm", remote: true %>
+							<%= link_to "Make a New Dictionary", set_init_path, method: :post, :class => "btn btn-info btn-sm", remote: true %>
 						</div>
 					</div><p></p>
 					<div class="input-group">

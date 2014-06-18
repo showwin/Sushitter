@@ -4,10 +4,11 @@ class HomeController < ApplicationController
   
   def index
     @tweet = Tweet.new
+    @dic_owners = Dictionary.find_by_sql("select distinct owner from dictionaries")
   end
   
   def test
-    @node = MeCab::Tagger.new.parseToNode("今日はかなり疲れた。明日は何しようかな")
+    @node = MeCab::Tagger.new.parseToNode("今日は暇だしとなりのトトロでも見ようか。ついでにApple Storeにも行く")
     #while node
     #  elem = node.feature.split(",")
     #  parts = elem[0]
@@ -15,16 +16,7 @@ class HomeController < ApplicationController
     #  node = node.next
     #end
   end
-  
-  def test_tweet
-    @tweets = "おぎゃー"
-    respond_to do |format|
-      format.html {redirect_to root_path}
-      format.js
-      format.json {render :json => @tweet}
-    end
-  end
-  
+
   def set_init
   end
   

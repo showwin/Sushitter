@@ -13,19 +13,27 @@ class TweetsController < ApplicationController
   
   def create
     @tweet = Tweet.new(tweet_params)
+    self_emo = false
     if tweet_params[:emotion] == "auto"
+      #感情の判別
       node = MeCab::Tagger.new.parseToNode(@tweet.content)
-      score = 0
+      score = 0.0
       node = node.next
       while node.next
         elem = (node.feature).split(",")
         parts = elem[0]
         if parts == "名詞" || parts == "動詞" || parts == "形容詞" || parts == "副詞" || parts == "助動詞"
+          elem[6] = node.surface if elem[6]=="*"
+          origin = MeCab::Tagger.new.parseToNode(elem[6])
+        	origin = origin.next
+        	oelem = origin.feature.split(",")
+        	oelem[7] = origin.surface if !oelem[7]
+        	elem[7] = oelem[7]
           word = elem[6]
-          kana = elem[7].tr("ァ-ン", "ぁ-ん") if elem[7]
+          kana = elem[7].tr("ァ-ン", "ぁ-ん")
           result = Dictionary.where(word: word, kana: kana).first
           if result
-            score += result[:value].to_f
+            score += result.value
           end
         end
         node = node.next
@@ -33,7 +41,44 @@ class TweetsController < ApplicationController
       score>=0 ? @tweet.emotion = 1 : @tweet.emotion = -1
       @tweet.score = score
     else
+      self_emo = true
       @tweet.score = @tweet.emotion.to_i
+    end
+    
+    #辞書の修正
+    score = @tweet.score
+    node = MeCab::Tagger.new.parseToNode(@tweet.content)
+    node = node.next
+    while node.next
+      elem = (node.feature).split(",")
+      parts = elem[0]
+      if parts == "名詞" || parts == "動詞" || parts == "形容詞" || parts == "副詞" || parts == "助動詞"
+        elem[6] = node.surface if elem[6]=="*"
+        origin = MeCab::Tagger.new.parseToNode(elem[6])
+      	origin = origin.next
+      	oelem = origin.feature.split(",")
+      	oelem[7] = origin.surface if !oelem[7]
+      	elem[7] = oelem[7]
+        word = elem[6]
+        kana = elem[7].tr("ァ-ン", "ぁ-ん") if elem[7]
+        result = Dictionary.where(word: word, kana: kana).first
+        if result
+          if self_emo
+            (result.value + score/500.0) > 1 ? result.value = 1 : result.value += score/500.0  
+          else
+            (result.value + score/1000.0) > 1 ? result.value = 1 : result.value += score/1000.0
+          end
+          result.save
+        else
+          dic = Dictionary.new
+          dic.owner = @tweet.name
+          dic.word = word
+          dic.kana = kana
+          dic.value = 0
+          dic.save
+        end
+      end
+      node = node.next
     end
 
     respond_to do |format|

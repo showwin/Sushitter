@@ -7,7 +7,6 @@ Sushitter::Application.routes.draw do
   root 'home#index'
   
   get 'test' => 'home#test', as: :test
-  post 'test_tweet' => 'home#test_tweet', as: :test_tweet
   post 'set_init' => 'home#set_init', as: :set_init
   post 'get_tweets' => 'tweets#get', as: :get_tweets
   
