@@ -166,6 +166,7 @@ class Dictionary < ActiveRecord::Base
         -1
       else
         value + score/10.0
+      end
     else
       if (value + score/1000.0) > 1 
         1
