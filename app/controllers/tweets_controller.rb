@@ -7,7 +7,7 @@ class TweetsController < ApplicationController
 
   def get
     from = params[:from].to_i
-    to = from+params[:to].to_i
+    to = params[:to].to_i
     @tweets = Tweet.where(:id => from..to)
   end
   

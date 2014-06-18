@@ -2,16 +2,9 @@ class DictionariesController < ApplicationController
   before_action :set_dictionary, only: [:show, :edit, :update, :destroy]
 
   def create
-    @dictionary = Dictionary.new(dictionary_params)
-
+    Dictionary.make(params[:owner])
     respond_to do |format|
-      if @dictionary.save
-        format.html { redirect_to @dictionary, notice: 'Dictionary was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @dictionary }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @dictionary.errors, status: :unprocessable_entity }
-      end
+      format.js
     end
   end
 

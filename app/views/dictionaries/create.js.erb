@@ -1,0 +1,7 @@
+function sleep(time, callback){
+	setTimeout(callback, time);
+}
+
+$("#cancel").click();
+$('#finish').modal('show')
+sleep(2500, function (){ location.reload(); });

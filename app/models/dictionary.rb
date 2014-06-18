@@ -28,7 +28,7 @@ class Dictionary < ActiveRecord::Base
         elem[6] = node.surface if elem[6]=="*"
         word = elem[6]
         kana = Word.get_kana(word)
-        result = Dictionary.where(word: word, kana: kana).first
+        result = Dictionary.where(word: word, kana: kana, owner: tweet.name).first
         if result
           result.value = self.get_new_value(result.value, score, self_emo)
           result.save

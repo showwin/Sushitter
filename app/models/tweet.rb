@@ -14,7 +14,7 @@ class Tweet < ActiveRecord::Base
         elem[6] = node.surface if elem[6]=="*"
         word = elem[6]
         kana = Word.get_kana(word)
-        result = Dictionary.where(word: word, kana: kana).first
+        result = Dictionary.where(word: word, kana: kana, owner: name).first
         score += result.value if result
       end
       node = node.next
