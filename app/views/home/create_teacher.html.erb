@@ -1,0 +1,38 @@
+<div id="wrapper">
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<h1>Sushitter</h1>
+			<div class="panel-heading">
+				<%= form_tag(start_learning_path(params[:owner])) do %>
+				<table class="table table-striped table-bordered table-hover" id="fc2table">
+					<h4>教師作成</h4>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>ツイート内容</th>
+							<th>+</th>
+							<th>-</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% 0.upto(49) do |i|%>
+							<tr>
+								<td><%= i+1 %></td>
+								<td><%= @tweets[i] %></td>
+								<td>
+									<% answer_no = "answer"+i.to_s %>
+									<%= radio_button answer_no, answer_no, 1, {checked: true} %>
+								</td>
+								<td>
+									<%= radio_button answer_no, answer_no, -1, {} %>
+								</td>
+							</tr>
+						<% end%>
+					</tbody>
+				</table>
+				<div align=right><%= submit_tag "Start Learning", :class => "btn btn-info"%></div><br>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>

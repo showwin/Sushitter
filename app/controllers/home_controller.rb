@@ -15,4 +15,13 @@ class HomeController < ApplicationController
     Dictionary.no_teacher_learning("Ito S",1,2)
   end
   
+  def create_teacher
+    @tweets = []
+    tweets_text=""
+    File.open("public/teacher/"+params[:owner]+".txt", 'r') { |f| tweets_text=f.read }
+    tweets_text.each_line do |line|
+      @tweets.push(line)
+    end
+  end
+  
 end
