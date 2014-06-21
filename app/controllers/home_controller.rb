@@ -11,7 +11,8 @@ class HomeController < ApplicationController
     @node = MeCab::Tagger.new.parseToNode("3月の給料もらったけど、時給117円から166円に上ってた。うれしーわー！！！！！！！！！！")
   end
 
-  def set_init
+  def my_create
+    Dictionary.no_teacher_learning("Ito S",1,2)
   end
   
 end

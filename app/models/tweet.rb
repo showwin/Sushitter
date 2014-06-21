@@ -5,9 +5,8 @@ class Tweet < ActiveRecord::Base
   #文章のポジネガScore取得
   def get_score
     score = 0.0
-    node = MeCab::Tagger.new.parseToNode(content)
-    node = node.next
-    while node.next
+    nm = Natto::MeCab.new
+    nm.parse(content) do |node|
       elem = (node.feature).split(",")
       parts = elem[0]
       if parts == "名詞" || parts == "動詞" || parts == "形容詞" || parts == "副詞" || parts == "助動詞"
@@ -23,6 +22,12 @@ class Tweet < ActiveRecord::Base
   end
   
   def get_emotion
-    score>=0 ? 1 : -1
+    if score > 0.5
+      1
+    elsif score < -0.5
+      -1
+    else
+      0
+    end
   end
 end
