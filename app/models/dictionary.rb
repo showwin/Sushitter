@@ -17,7 +17,7 @@ class Dictionary < ActiveRecord::Base
       next if content.include?("RT")
       next if content.include?("#")
       next if content.include?("http")
-      fw_temp.write(str+"\n")
+      fw_temp.write(content+"\n")
     end
     fw_temp.close
   end
@@ -36,7 +36,7 @@ class Dictionary < ActiveRecord::Base
     fw.close
   end
   
-  def make_no_teacher(owner)
+  def self.make_no_teacher(owner)
     ts = open("public/teacher/"+owner+".txt", "w")
     nts = open("public/no_teacher/"+owner+".txt", "r")
     j = 0
@@ -58,13 +58,15 @@ class Dictionary < ActiveRecord::Base
     tweets_text.each_line do |line|
       tweets.push(line.chomp)
     end
-    0.upto(49) do |i|
-      answer = "answer"+i.to_s
-      tweet = Tweet.new(content: tweets[i], name: owner, emotion: emotions[i])
-      self_emo = true
-      tweet.score = tweet.emotion
-      tweet.save
-      Dictionary.value_update(tweet, true)
+    3.times do
+      0.upto(49) do |i|
+        answer = "answer"+i.to_s
+        tweet = Tweet.new(content: tweets[i], name: owner, emotion: emotions[i])
+        self_emo = true
+        tweet.score = tweet.emotion
+        tweet.save
+        Dictionary.value_update(tweet, true)
+      end
     end
     Dictionary.no_teacher_learning(owner)
   end
@@ -184,7 +186,7 @@ class Dictionary < ActiveRecord::Base
   
   def self.teacher_learning(owner)
     i = 0
-    CSV.foreach("./app/assets/data/teacher.csv") do |row|
+    CSV.foreach("./app/assets/data/teacher_all.csv") do |row|
       i += 1
       p i
       word = row[0]

@@ -1,15 +1,3 @@
-<% @node=@node.next %>
-<% while @node.next %>
-  <%= @node.surface + @node.feature %>::::<br>
-	<% elem = @node.feature.split(",") %>
-	<%= @node.feature %>
-	<% elem[6] = @node.surface if elem[6]=="*" %>
-	<% elem[7] = @node.surface if !elem[7] %><br>
-	<% origin = MeCab::Tagger.new.parseToNode(elem[6]) %>
-	<% origin = origin.next %>
-	<% oelem = origin.feature.split(",") %>
-	<% oelem[7] = origin.surface if !oelem[7] %>
-	<% elem[7] = oelem[7] %>
-	<%= elem[0]+elem[6]+elem[7].tr("ァ-ン", "ぁ-ん") %>
-  <% @node = @node.next %><br><br>
+<% @emotion.each do |e| %>
+<%= e %>
 <% end %>

@@ -10,10 +10,12 @@ class DictionariesController < ApplicationController
   def start_learning
     emotions=[]
     0.upto(49) do |i|
-      emotions[i] = (params["emotion"+i.to_s]).to_i
+      emotion = params[:answer]
+      num = "answer"+i.to_s
+      emotions.push((emotion[num]).to_i)
     end
     Dictionary.start_learning(params[:owner], emotions)
-  
+    
     respond_to do |format|
       format.js
     end

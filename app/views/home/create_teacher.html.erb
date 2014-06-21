@@ -21,10 +21,10 @@
 								<td><%= @tweets[i] %></td>
 								<td>
 									<% answer_no = "answer"+i.to_s %>
-									<%= radio_button answer_no, answer_no, 1, {checked: true} %>
+									<%= radio_button "answer", answer_no, 1, {checked: true} %>
 								</td>
 								<td>
-									<%= radio_button answer_no, answer_no, -1, {} %>
+									<%= radio_button "answer", answer_no, -1, {} %>
 								</td>
 							</tr>
 						<% end%>
