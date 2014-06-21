@@ -1,10 +1,6 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
 
-  def index
-    @tweets = Tweet.all
-  end
-
   def get
     from = params[:from].to_i
     to = params[:to].to_i

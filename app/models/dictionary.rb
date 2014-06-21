@@ -3,31 +3,26 @@ class Dictionary < ActiveRecord::Base
   require 'kconv'
   include Word
   
-  def self.no_teacher_learning(owner)
-    f = open("./public/no_teacher/"+owner+".txt")
-    f.each_line do |line|
-      tweet = Tweet.new(content: line, name: owner)
-      tweet.score = tweet.get_score
-      tweet.emotion = tweet.get_emotion
-      tweet.save
-      Dictionary.value_update(tweet, false)
-    end
-    f.close
+  def self.make(owner,csv_file)
+    Dictionary.make_teacher_temp(owner, csv_file)
+    Dictionary.make_teacher(owner)
+    Dictionary.make_no_teacher(owner)
   end
   
-  def self.make(owner,csv_file)
+  def self.make_teacher_temp(owner, csv_file)
     fw_temp = open("public/teacher_temp/"+owner+".txt", "w")
     CSV.parse(Kconv.toutf8(csv_file.read)) do |row|
-      str = row[5]
-      next if str.size < 30
-      next if str.include?("@")
-      next if str.include?("RT")
-      next if str.include?("#")
-      next if str.include?("http")
+      content = row[5]
+      next if content.include?("@")
+      next if content.include?("RT")
+      next if content.include?("#")
+      next if content.include?("http")
       fw_temp.write(str+"\n")
     end
     fw_temp.close
-
+  end
+  
+  def self.make_teacher(owner)
     fw = open("public/no_teacher/"+owner+".txt", "w")
     fr = open("public/teacher_temp/"+owner+".txt", "r")
     j = 0
@@ -39,6 +34,9 @@ class Dictionary < ActiveRecord::Base
     end
     fr.close
     fw.close
+  end
+  
+  def make_no_teacher(owner)
     ts = open("public/teacher/"+owner+".txt", "w")
     nts = open("public/no_teacher/"+owner+".txt", "r")
     j = 0
@@ -51,6 +49,36 @@ class Dictionary < ActiveRecord::Base
     end
     ts.close
     nts.close
+  end
+  
+  def self.start_learning(owner,emotions)
+    tweets = []
+    tweets_text = ""
+    File.open("public/teacher/"+owner+".txt", 'r') { |f| tweets_text=f.read }
+    tweets_text.each_line do |line|
+      tweets.push(line.chomp)
+    end
+    0.upto(49) do |i|
+      answer = "answer"+i.to_s
+      tweet = Tweet.new(content: tweets[i], name: owner, emotion: emotions[i])
+      self_emo = true
+      tweet.score = tweet.emotion
+      tweet.save
+      Dictionary.value_update(tweet, true)
+    end
+    Dictionary.no_teacher_learning(owner)
+  end
+  
+  def self.no_teacher_learning(owner)
+    f = open("./public/no_teacher/"+owner+".txt")
+    f.each_line do |line|
+      tweet = Tweet.new(content: line, name: owner)
+      tweet.score = tweet.get_score
+      tweet.emotion = tweet.get_emotion
+      tweet.save
+      Dictionary.value_update(tweet, false)
+    end
+    f.close
   end
   
   def self.value_update(tweet, self_emo)

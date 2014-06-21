@@ -3,7 +3,7 @@
 		<div class="col-md-10 col-md-offset-1">
 			<h1>Sushitter</h1>
 			<div class="panel-heading">
-				<%= form_tag(start_learning_path(params[:owner])) do %>
+				<%= form_tag(start_learning_path(params[:owner]), remote: true) do %>
 				<table class="table table-striped table-bordered table-hover" id="fc2table">
 					<h4>教師作成</h4>
 					<thead>
@@ -30,8 +30,35 @@
 						<% end%>
 					</tbody>
 				</table>
-				<div align=right><%= submit_tag "Start Learning", :class => "btn btn-info"%></div><br>
+				<div align=right><%= submit_tag "Start Learning", :class => "btn btn-info", :id => "start_learning"%></div><br>
 				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="learning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<h4>
+					Your dictionary is studing now... 
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					Please wait a few minutes.
+				</h4>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- making dictionary -->
+<div class="modal fade" id="finish" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<h4>
+					Everything is ready !!!!
+				</h4>
 			</div>
 		</div>
 	</div>

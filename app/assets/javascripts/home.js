@@ -1,7 +1,6 @@
 $(function(){
-	$("#create_dictionary").click(function(){
-		$("#cancel").click();
-		$('#making').modal('show')
+	$("#start_learning").click(function(){
+		$('#learning').modal('show')
 	});
 });
 

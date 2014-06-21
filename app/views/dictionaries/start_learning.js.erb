@@ -1,0 +1,9 @@
+function sleep(time, callback){
+	setTimeout(callback, time);
+}
+function link(){
+	location.href='/';
+}
+$('#learning').modal('hide')
+$('#finish').modal('show')
+sleep(2500, function (){ link(); });

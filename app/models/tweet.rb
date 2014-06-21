@@ -9,7 +9,7 @@ class Tweet < ActiveRecord::Base
     nm.parse(content) do |node|
       elem = (node.feature).split(",")
       parts = elem[0]
-      if parts == "名詞" || parts == "動詞" || parts == "形容詞" || parts == "副詞" || parts == "助動詞"
+      if parts == "名詞" || parts == "動詞" || parts == "形容詞"
         elem[6] = node.surface if elem[6]=="*"
         word = elem[6]
         kana = Word.get_kana(word)
