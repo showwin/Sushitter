@@ -19,3 +19,5 @@
 /public/set_temp/*
 /public/supervised_set/*
 /public/unsupervised_set/*
+
+/.DS_Store
