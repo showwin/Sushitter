@@ -18,3 +18,4 @@
 # Ignore teacher tweets
 /public/teacher
 /public/teacher_temp
+/public/no_teacher
