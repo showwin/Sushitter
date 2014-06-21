@@ -16,6 +16,6 @@
 /tmp
 
 # Ignore teacher tweets
-/public/teacher
-/public/teacher_temp
-/public/no_teacher
+/public/set_temp/*
+/public/supervised_set/*
+/public/unsupervised_set/*

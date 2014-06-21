@@ -4,9 +4,18 @@ class DictionariesController < ApplicationController
 
   def create
     Dictionary.make(params[:owner], params[:csv_file])
-    redirect_to create_teacher_path(params[:owner])
+    redirect_to new_teacher_path(params[:owner])
   end
-
+  
+  def new_teacher
+    @tweets = []
+    tweets_text=""
+    File.open("public/supervised_set/"+params[:owner]+".txt", 'r') { |f| tweets_text=f.read }
+    tweets_text.each_line do |line|
+      @tweets.push(line)
+    end
+  end
+  
   def start_learning
     emotions=[]
     0.upto(49) do |i|
@@ -14,7 +23,7 @@ class DictionariesController < ApplicationController
       num = "answer"+i.to_s
       emotions.push((emotion[num]).to_i)
     end
-    Dictionary.start_learning(params[:owner], emotions)
+    Dictionary.supervised_learning(params[:owner], emotions)
     
     respond_to do |format|
       format.js

@@ -3,14 +3,18 @@ class Dictionary < ActiveRecord::Base
   require 'kconv'
   include Word
   
-  def self.make(owner,csv_file)
-    Dictionary.make_teacher_temp(owner, csv_file)
-    Dictionary.make_teacher(owner)
-    Dictionary.make_no_teacher(owner)
+  def self.owners
+    Dictionary.find_by_sql("select distinct owner from dictionaries")
   end
   
-  def self.make_teacher_temp(owner, csv_file)
-    fw_temp = open("public/teacher_temp/"+owner+".txt", "w")
+  def self.make(owner,csv_file)
+    Dictionary.make_set_temp(owner, csv_file)
+    Dictionary.make_unsupervised_set(owner)
+    Dictionary.make_supervised_set(owner)
+  end
+  
+  def self.make_set_temp(owner, csv_file)
+    fw_temp = open("public/set_temp/"+owner+".txt", "w")
     CSV.parse(Kconv.toutf8(csv_file.read)) do |row|
       content = row[5]
       next if content.include?("@")
@@ -22,9 +26,9 @@ class Dictionary < ActiveRecord::Base
     fw_temp.close
   end
   
-  def self.make_teacher(owner)
-    fw = open("public/no_teacher/"+owner+".txt", "w")
-    fr = open("public/teacher_temp/"+owner+".txt", "r")
+  def self.make_unsupervised_set(owner)
+    fw = open("public/unsupervised_set/"+owner+".txt", "w")
+    fr = open("public/set_temp/"+owner+".txt", "r")
     j = 0
     fr.each_line do |line|
       next if line.size < 30
@@ -36,9 +40,9 @@ class Dictionary < ActiveRecord::Base
     fw.close
   end
   
-  def self.make_no_teacher(owner)
-    ts = open("public/teacher/"+owner+".txt", "w")
-    nts = open("public/no_teacher/"+owner+".txt", "r")
+  def self.make_supervised_set(owner)
+    ts = open("public/supervised_set/"+owner+".txt", "w")
+    nts = open("public/unsupervised_set/"+owner+".txt", "r")
     j = 0
     nts.each_line do |line|
       if rand(30) == 1
@@ -51,10 +55,10 @@ class Dictionary < ActiveRecord::Base
     nts.close
   end
   
-  def self.start_learning(owner,emotions)
+  def self.supervised_learning(owner,emotions)
     tweets = []
     tweets_text = ""
-    File.open("public/teacher/"+owner+".txt", 'r') { |f| tweets_text=f.read }
+    File.open("public/supervised_set/"+owner+".txt", 'r') { |f| tweets_text=f.read }
     tweets_text.each_line do |line|
       tweets.push(line.chomp)
     end
@@ -68,11 +72,11 @@ class Dictionary < ActiveRecord::Base
         Dictionary.value_update(tweet, true)
       end
     end
-    Dictionary.no_teacher_learning(owner)
+    Dictionary.unsupervised_learning(owner)
   end
   
-  def self.no_teacher_learning(owner)
-    f = open("./public/no_teacher/"+owner+".txt")
+  def self.unsupervised_learning(owner)
+    f = open("./public/unsupervised_set/"+owner+".txt")
     f.each_line do |line|
       tweet = Tweet.new(content: line, name: owner)
       tweet.score = tweet.get_score
