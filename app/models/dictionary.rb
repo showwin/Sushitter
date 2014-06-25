@@ -1,5 +1,5 @@
 class Dictionary < ActiveRecord::Base
-  require "CSV"
+  require "csv"
   require 'kconv'
   include Word
   
