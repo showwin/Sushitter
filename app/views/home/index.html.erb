@@ -30,8 +30,8 @@
 					<div class="btn-group pull-right">
 						<%= form_tag get_tweets_path, remote: true do %>
 						show tweets from
-							<%= text_field_tag :from, params[:from] ,:size => 1 %> to
-							<%= text_field_tag :to, params[:to] ,:size => 1 %>
+							<%= text_field_tag :from, params[:from] ,:size => 4 %> to
+							<%= text_field_tag :to, params[:to] ,:size => 4 %>
 							<span class="getTweets">
 								<%= submit_tag "GET", :class => "btn btn-info btn-sm", :id => "getTweets" %>
 							</span>
