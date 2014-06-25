@@ -9,6 +9,9 @@ gem 'sqlite3'
 gem 'mecab'
 gem 'natto'
 
+### for JavaScript runtime ###
+gem 'therubyracer', :platforms => :ruby
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
